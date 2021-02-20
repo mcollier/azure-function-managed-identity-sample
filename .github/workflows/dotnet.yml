@@ -26,7 +26,7 @@ jobs:
         dotnet-version: ${{ env.DOTNET_VERSION }}
 
     - name: Build Project
-      run: dotnet build ./src/azure-func-managed-identity-sample.csproj --configuration Release --output ./output
+      run: dotnet build ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/azure-func-managed-identity-sample.csproj --configuration Release --output ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/output
 
     - name: 'Run Azure Functions Action'
       uses: Azure/functions-action@v1
