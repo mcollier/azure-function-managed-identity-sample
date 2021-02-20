@@ -7,6 +7,8 @@ on:
     branches: [ main ]
     
 env:
+  AZURE_FUNCTIONAPP_NAME: msc101-func  # set this to your application's name
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: './src'    # set this to the path to your web app project, defaults to the repository root
   DOTNET_VERSION: '3.1.301'
 
 jobs:
@@ -15,10 +17,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: 'Checkout GitHub Action'
     - uses: actions/checkout@v2
-    - name: Setup .NET
+
+    - name: Setup .NET ${{ env.DOTNET_VERSION}} Environment
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: ${{ env.DOTNET_VERSION }}
-    - name: Build
+
+    - name: Build Project
       run: dotnet build ./src/azure-func-managed-identity-sample.csproj --configuration Release --output ./output
