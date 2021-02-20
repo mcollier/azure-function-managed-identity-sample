@@ -21,4 +21,4 @@ jobs:
       with:
         dotnet-version: ${{ env.DOTNET_VERSION }}
     - name: Build
-      run: dotnet build --configuration Release --output ./output
+      run: dotnet build ./src/azure-func-managed-identity-sample.csproj --configuration Release --output ./output
