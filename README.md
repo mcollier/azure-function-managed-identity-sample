@@ -1,0 +1,1 @@
+# Azure Function Managed Identity Sample
