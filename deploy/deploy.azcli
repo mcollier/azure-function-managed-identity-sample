@@ -1,0 +1,5 @@
+az group create -n "az-func-managed-identity-sample-2" -l eastus
+
+az deployment group validate -g "az-func-managed-identity-sample-2" --template-file ./deploy/azuredeploy.json --parameters baseName=msc101
+
+az deployment group create -g "az-func-managed-identity-sample-2" --template-file ./deploy/azuredeploy.json --parameters baseName=msc101 --verbose
