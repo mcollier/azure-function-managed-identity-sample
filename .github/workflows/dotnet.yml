@@ -13,6 +13,7 @@ env:
 
 jobs:
   build:
+    name: Build and deploy Azure Function app
 
     runs-on: ubuntu-latest
 
