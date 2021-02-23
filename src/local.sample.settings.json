@@ -6,6 +6,6 @@
     "EventHubName":"[EVENT-HUB-NAME]",
     "EventHubConnectionString": "[EVENT-HUB-CONNECTION-STRING]",
     "QueueName":"[AZURE-STORAGE-QUEUE-NAME]",
-    "MyStorageConnection__endpoint": "https://[AZURE-STORAGE-ACCOUNT-NAME].queue.core.windows.net/[AZURE-STORAGE-QUEUE-NAME]"
+    "MyStorageConnection__endpoint": "https://[AZURE-STORAGE-ACCOUNT-NAME].queue.core.windows.net/"
   }
 }
