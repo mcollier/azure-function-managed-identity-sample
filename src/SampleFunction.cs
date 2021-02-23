@@ -13,11 +13,14 @@ namespace Collier.Functions
     public static class SampleFunction
     {
         [FunctionName("QueueTrigger")]
-        public static void RunQueueTrigger(
+        [return: Queue("%OutputQueueName%")]
+        public static QueueMessage RunQueueTrigger(
             [QueueTrigger("%QueueName%", Connection="MyStorageConnection" )] QueueMessage queueItem,
             ILogger log)
         {
             log.LogInformation($"C# function processed: {queueItem.MessageText}");
+
+            return queueItem.MessageText + "output";
         }
 
     //     [FunctionName("EventHubTriggerCSharp1")]
