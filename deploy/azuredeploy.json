@@ -45,7 +45,9 @@
         "storageQueueName": "[concat(variables('storageAccountName'), '/default/widgets')]",
         "hostingPlanName": "[concat(parameters('baseName'), '-plan')]",
         "functionAppName": "[concat(parameters('baseName'),'-func')]",
-        "applicationInsightsName": "[concat(parameters('baseName'), '-ai')]"
+        "applicationInsightsName": "[concat(parameters('baseName'), '-ai')]",
+        "storageQueueRoleDefinitionId":"[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '974c5e8b-45b9-4653-ba55-5f855dd0fb88')]",
+        "storageQueueRoleAssignmentName":"[guid(resourceId('Microsoft.Web/sites', variables('functionAppName')), variables('storageQueueRoleDefinitionId'), '0a9dd9cc-3ac8-46c0-95ca-5c2e34be621e')]"
     },
     "resources": [
         {
@@ -166,6 +168,20 @@
                         }
                     ]
                 }
+            }
+        },
+        {
+            "type": "Microsoft.Authorization/roleAssignments",
+            "apiVersion": "2020-04-01-preview",
+            "name": "[variables('storageQueueRoleAssignmentName')]",
+            "scope": "[concat('Microsoft.Storage/storageAccounts', '/', variables('storageAccountName'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]",
+                "[resourceId('Microsoft.Web/sites', variables('functionAppName'))]"
+            ],
+            "properties": {
+                "roleDefinitionId": "[variables('storageQueueRoleDefinitionId')]",
+                "principalId": "[reference(resourceId('Microsoft.Web/sites', variables('functionAppName')), '2019-08-01', 'Full').identity.principalId]"
             }
         }
     ]
