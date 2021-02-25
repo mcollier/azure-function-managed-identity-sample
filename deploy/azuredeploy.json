@@ -36,18 +36,31 @@
             "metadata": {
                 "description": "Storage Account type"
             }
+        },
+        "storageQueueName": {
+            "type": "string",
+            "defaultValue": "widgets",
+            "metadata": {
+                "description": "description"
+            }
+        },
+        "outputStorageQueueName": {
+            "type": "string",
+            "defaultValue": "widgets-output",
+            "metadata": {
+                "description": "description"
+            }
         }
     },
     "variables": {
         "eventHubNamespace": "[concat(parameters('baseName'), 'ns')]",
         "eventHubName": "[parameters('baseName')]",
         "storageAccountName": "[concat(parameters('baseName'),'sa')]",
-        "storageQueueName": "[concat(variables('storageAccountName'), '/default/widgets')]",
         "hostingPlanName": "[concat(parameters('baseName'), '-plan')]",
         "functionAppName": "[concat(parameters('baseName'),'-func')]",
         "applicationInsightsName": "[concat(parameters('baseName'), '-ai')]",
         "eventHubRoleDefinitionId":"[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'a638d3c7-ab3a-418d-83e6-5f17a39d4fde')]",
-        "eventHubRoleAssignmentName":"[guid(resourceId('Microsoft.Web/sites', variables('functionAppName')), variables('eventHubRoleDefinitionId'), 'c42e58d2-4f18-4afc-8c7b-5870fdeb9c38')]"
+        "eventHubRoleAssignmentName":"[guid(resourceId('Microsoft.Web/sites', variables('functionAppName')), variables('eventHubRoleDefinitionId'), 'c42e58d2-4f18-4afc-8c7b-5870fdeb9c38')]",
         "storageQueueRoleDefinitionId":"[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '974c5e8b-45b9-4653-ba55-5f855dd0fb88')]",
         "storageQueueRoleAssignmentName":"[guid(resourceId('Microsoft.Web/sites', variables('functionAppName')), variables('storageQueueRoleDefinitionId'), '0a9dd9cc-3ac8-46c0-95ca-5c2e34be621e')]"
     },
@@ -109,7 +122,15 @@
         {
             "type": "Microsoft.Storage/storageAccounts/queueServices/queues",
             "apiVersion": "2019-06-01",
-            "name": "[variables('storageQueueName')]",
+            "name": "[concat(variables('storageAccountName'), '/default/', parameters('storageQueueName'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
+            ]
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/queueServices/queues",
+            "apiVersion": "2019-06-01",
+            "name": "[concat(variables('storageAccountName'), '/default/', parameters('outputStorageQueueName'))]",
             "dependsOn": [
                 "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
             ]
@@ -167,6 +188,26 @@
                         {
                             "name": "FUNCTIONS_WORKER_RUNTIME",
                             "value": "dotnet"
+                        },
+                        {
+                            "name": "QueueName",
+                            "value": "[parameters('storageQueueName')]"
+                        },
+                        {
+                            "name": "OutputQueueName",
+                            "value": "[parameters('outputStorageQueueName')]"
+                        },
+                        {
+                            "name": "MyStorageConnection__endpoint",
+                            "value": "[concat('https://', variables('storageAccountName'), '.queue.', environment().suffixes.storage)]"
+                        },
+                        {
+                            "name": "EventHubConnectionString__fullyQualifiedNamespace",
+                            "value": "[concat(variables('eventHubNamespace'), 'servicebus.windows.net')]"
+                        },
+                        {
+                            "name": "EventHubName",
+                            "value": "[variables('eventHubName')]"
                         }
                     ]
                 }
