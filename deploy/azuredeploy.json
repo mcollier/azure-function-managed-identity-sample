@@ -46,6 +46,8 @@
         "hostingPlanName": "[concat(parameters('baseName'), '-plan')]",
         "functionAppName": "[concat(parameters('baseName'),'-func')]",
         "applicationInsightsName": "[concat(parameters('baseName'), '-ai')]",
+        "eventHubRoleDefinitionId":"[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'a638d3c7-ab3a-418d-83e6-5f17a39d4fde')]",
+        "eventHubRoleAssignmentName":"[guid(resourceId('Microsoft.Web/sites', variables('functionAppName')), variables('eventHubRoleDefinitionId'), 'c42e58d2-4f18-4afc-8c7b-5870fdeb9c38')]"
         "storageQueueRoleDefinitionId":"[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '974c5e8b-45b9-4653-ba55-5f855dd0fb88')]",
         "storageQueueRoleAssignmentName":"[guid(resourceId('Microsoft.Web/sites', variables('functionAppName')), variables('storageQueueRoleDefinitionId'), '0a9dd9cc-3ac8-46c0-95ca-5c2e34be621e')]"
     },
@@ -135,7 +137,7 @@
                 "[resourceId('Microsoft.Web/serverfarms', variables('hostingPlanName'))]",
                 "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
             ],
-            "identity":{
+            "identity": {
                 "type": "SystemAssigned"
             },
             "properties": {
@@ -168,6 +170,20 @@
                         }
                     ]
                 }
+            }
+        },
+        {
+            "type": "Microsoft.Authorization/roleAssignments",
+            "apiVersion": "2020-04-01-preview",
+            "name": "[variables('eventHubRoleAssignmentName')]",
+            "scope": "[concat('Microsoft.EventHub/namespaces', '/', variables('eventHubNamespace'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.EventHub/namespaces', variables('eventHubNamespace'))]",
+                "[resourceId('Microsoft.Web/sites', variables('functionAppName'))]"
+            ],
+            "properties": {
+                "roleDefinitionId": "[variables('eventHubRoleDefinitionId')]",
+                "principalId": "[reference(resourceId('Microsoft.Web/sites', variables('functionAppName')), '2019-08-01', 'Full').identity.principalId]"
             }
         },
         {

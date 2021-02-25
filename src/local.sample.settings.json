@@ -1,10 +1,11 @@
 {
   "IsEncrypted": false,
   "Values": {
+    "APPINSIGHTS_INSTRUMENTATIONKEY":"[APPLICATION-INSIGHTS-KEY]",
     "AzureWebJobsStorage": "UseDevelopmentStorage=true",
     "FUNCTIONS_WORKER_RUNTIME": "dotnet",
     "EventHubName":"[EVENT-HUB-NAME]",
-    "EventHubConnectionString": "[EVENT-HUB-CONNECTION-STRING]",
+    "EventHubConnectionString__fullyQualifiedNamespace": "[EVENT-HUB-NAMESPACE-NAME].servicebus.windows.net",
     "QueueName":"[AZURE-STORAGE-QUEUE-NAME]",
     "MyStorageConnection__endpoint": "https://[AZURE-STORAGE-ACCOUNT-NAME].queue.core.windows.net/"
   }
