@@ -11,9 +11,9 @@ namespace Collier.Functions
 {
     public static class SampleFunction
     {
-        [FunctionName("QueueTrigger")]
+        [FunctionName("ProcessStorageQueueFunction")]
         [return: Queue("%OutputQueueName%", Connection="MyStorageConnection")]
-        public static string RunQueueTrigger(
+        public static string ProcessStorageQueue(
             [QueueTrigger("%QueueName%", Connection="MyStorageConnection" )] QueueMessage queueItem,
             ILogger log)
         {
@@ -23,8 +23,8 @@ namespace Collier.Functions
             return outputMessage;
         }
 
-        [FunctionName("EventHubTriggerCSharp1")]
-        public static async Task Run([EventHubTrigger("%EventHubName%", Connection = "EventHubConnectionString", ConsumerGroup="$Default")] EventData[] events, ILogger log)
+        [FunctionName("ProcessEventHubFunction")]
+        public static async Task ProcessEventHub([EventHubTrigger("%EventHubName%", Connection = "EventHubConnectionString", ConsumerGroup="$Default")] EventData[] events, ILogger log)
         {
             // NOTE: Unable to get binding expression to work for ConsumerGroup.  Need to investigate more.  See prior SDK related issue at https://github.com/Azure/azure-functions-eventhubs-extension/issues/4
             
