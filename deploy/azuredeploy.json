@@ -203,7 +203,7 @@
                         },
                         {
                             "name": "EventHubConnectionString__fullyQualifiedNamespace",
-                            "value": "[concat(variables('eventHubNamespace'), 'servicebus.windows.net')]"
+                            "value": "[concat(variables('eventHubNamespace'), '.servicebus.windows.net')]"
                         },
                         {
                             "name": "EventHubName",
