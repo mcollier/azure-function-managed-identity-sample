@@ -20,8 +20,10 @@ namespace Collier.Functions
         }
 
         [FunctionName("EventHubTriggerCSharp1")]
-        public static async Task Run([EventHubTrigger("%EventHubName%", Connection = "EventHubConnectionString")] EventData[] events, ILogger log)
+        public static async Task Run([EventHubTrigger("%EventHubName%", Connection = "EventHubConnectionString", ConsumerGroup="$Default")] EventData[] events, ILogger log)
         {
+            // NOTE: Unable to get binding expression to work for ConsumerGroup.  Need to investigate more.  See prior SDK related issue at https://github.com/Azure/azure-functions-eventhubs-extension/issues/4
+            
             // Reference https://github.com/Azure/azure-sdk-for-net/tree/Microsoft.Azure.WebJobs.Extensions.EventHubs_5.0.0-beta.1/sdk/eventhub/Microsoft.Azure.WebJobs.Extensions.EventHubs
             
             var exceptions = new List<Exception>();
