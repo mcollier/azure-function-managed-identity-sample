@@ -44,7 +44,7 @@ namespace Collier.Functions
         }
 
         [FunctionName("ProcessEventHubFunction")]
-        public static async Task ProcessEventHub([EventHubTrigger("%EventHubName%", Connection = "EventHubConnectionString", ConsumerGroup="$Default")] EventData[] events, ILogger log)
+        public static async Task ProcessEventHub([EventHubTrigger("%EventHubName%", Connection = "EventHubConnectionString", ConsumerGroup="%EventHubConsumerGroup%")] EventData[] events, ILogger log)
         {
             // NOTE: Unable to get binding expression to work for ConsumerGroup.  Need to investigate more.  See prior SDK related issue at https://github.com/Azure/azure-functions-eventhubs-extension/issues/4
             
