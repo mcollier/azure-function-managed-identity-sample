@@ -1,1 +1,1 @@
-GET http://localhost:7071/api/HttpTriggerCSharp1
+GET http://localhost:7071/api/SubmitOutputQueueMessagesFunction
