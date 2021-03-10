@@ -1,16 +1,36 @@
+using Azure.Messaging.EventHubs;
+using Azure.Storage.Queues.Models;
+
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.WebJobs;
+using Microsoft.Azure.WebJobs.Extensions.Http;
+using Microsoft.Extensions.Logging;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Azure.Messaging.EventHubs;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Extensions.Logging;
-using Azure.Storage.Queues.Models;
 
 namespace Collier.Functions
 {
     public static class SampleFunction
     {
+        [FunctionName("SubmitOutputQueueMessagesFunction")]
+        public static async Task<IActionResult> SubmitOutputQueueMessages(
+            [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
+            [Queue("%OutputQueueName%", Connection="MyStorageConnection")]IAsyncCollector<string> messages,
+            ILogger log)
+        {
+            log.LogInformation("C# HTTP trigger function processed a request.");
+
+            for (int i = 0; i < 10; i++)
+            {
+                await messages.AddAsync($"Hello, {i}!");
+            }
+            return new OkResult();
+        }
+        
         [FunctionName("ProcessStorageQueueFunction")]
         [return: Queue("%OutputQueueName%", Connection="MyStorageConnection")]
         public static string ProcessStorageQueue(

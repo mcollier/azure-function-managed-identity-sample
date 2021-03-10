@@ -8,7 +8,7 @@
     "EventHubConnectionString__fullyQualifiedNamespace": "[EVENT-HUB-NAMESPACE-NAME].servicebus.windows.net",
     "EventHubConsumerGroup":"$Default",
     "QueueName":"[AZURE-STORAGE-QUEUE-NAME]",
-    "OutputQueueName": "[AZURE-STORAGE-QUEUE-NAME]",
+    "OutputQueueName":"[AZURE-STORAGE-QUEUE-OUTPUT-NAME]",
     "MyStorageConnection__serviceUri": "https://[AZURE-STORAGE-ACCOUNT-NAME].queue.core.windows.net/"
   }
 }
